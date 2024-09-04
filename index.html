@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق الإحالة</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0088cc;
+        }
+        button {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #006699;
+        }
+        #referralLink {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>مرحبًا بك في تطبيق الإحالة</h1>
+        <p>استخدم هذا التطبيق لمشاركة رابط الإحالة الخاص بك ودعوة أصدقائك.</p>
+        <button id="shareBtn">مشاركة التطبيق</button>
+        <button id="infoBtn">معلومات التطبيق</button>
+        <div id="referralLink"></div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let shareBtn = document.getElementById("shareBtn");
+        let infoBtn = document.getElementById("infoBtn");
+        let referralLinkElement = document.getElementById("referralLink");
+
+        shareBtn.addEventListener("click", function(){
+            tg.shareUrl("https://t.me/testyes56bot?start=ref_" + tg.initDataUnsafe.user.id);
+        });
+
+        infoBtn.addEventListener("click", function(){
+            tg.showPopup({
+                title: 'معلومات التطبيق',
+                message: 'هذا التطبيق يساعدك على مشاركة رابط الإحالة الخاص بك مع أصدقائك. كل مرة يستخدم فيها شخص ما رابطك، تحصل على نقاط!',
+                buttons: [{text: 'حسنًا'}]
+            });
+        });
+
+        // إنشاء رابط الإحالة
+        let referralLink = "https://t.me/testyes56bot?start=ref_" + tg.initDataUnsafe.user.id;
+        referralLinkElement.textContent = "رابط الإحالة الخاص بك: " + referralLink;
+
+        tg.onEvent('viewportChanged', function(){
+            if (tg.isExpanded) {
+                tg.expand();
+            }
+        });
+
+        tg.MainButton.setText('إغلاق التطبيق');
+        tg.MainButton.show();
+        tg.MainButton.onClick(function(){
+            tg.close();
+        });
+    </script>
+</body>
+</html>
